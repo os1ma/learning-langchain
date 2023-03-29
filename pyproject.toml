@@ -8,7 +8,12 @@ packages = [{include = "learning_langchain"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
+langchain = "^0.0.125"
+openai = "^0.27.2"
 
+
+[tool.poetry.group.dev.dependencies]
+autopep8 = "^2.0.2"
 
 [build-system]
 requires = ["poetry-core"]
