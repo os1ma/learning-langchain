@@ -9,7 +9,6 @@ conversation = ConversationChain(
     memory=ConversationBufferMemory()
 )
 
-# ループで標準入力を受け付ける
 while True:
     user_message = input("You: ")
     ai_message = conversation.predict(input=user_message)
