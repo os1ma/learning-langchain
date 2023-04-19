@@ -7,5 +7,7 @@ tools = load_tools(["terminal", "llm-math"], llm=llm)
 agent = initialize_agent(
     tools, llm, agent="zero-shot-react-description", verbose=True)
 
-agent.run("2+3を計算してください")
-agent.run("lsコマンドの実行結果を教えてください")
+result = agent.run("2+3を計算してください")
+print(result)
+result = agent.run("lsコマンドの実行結果を教えてください")
+print(result)
