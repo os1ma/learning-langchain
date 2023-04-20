@@ -2,38 +2,49 @@ from langchain.chains import SimpleSequentialChain
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 from langchain.llms import OpenAI
+import langchain
+
+
+langchain.verbose = True
 
 # Model を用意
 llm = OpenAI(model_name="text-davinci-003", temperature=0)
 
 # 1 つ目の Prompt と Chain を用意
-template = """
-次のコマンドの概要を説明してください。
+cot_template = """
+以下の質問に回答してください。
 
-コマンド: {command}
+### 質問 ###
+{question}
+### 質問終了 ###
+
+ステップバイステップで考えましょう。
 """
-prompt = PromptTemplate(
-    input_variables=["command"],
-    template=template,
+cot_prompt = PromptTemplate(
+    input_variables=["question"],
+    template=cot_template,
 )
-chain = LLMChain(llm=llm, prompt=prompt)
+cot_chain = LLMChain(llm=llm, prompt=cot_prompt)
 
 # 2 つ目の Prompt と Chain を用意
-template2 = """
-入力を要約してください。
+summarize_template = """
+入力を結論だけ一言に要約してください。
 
-入力: {input}
+### 入力 ###
+{input}
+### 入力終了 ###
 """
-prompt2 = PromptTemplate(
+summarize_prompt = PromptTemplate(
     input_variables=["input"],
-    template=template2,
+    template=summarize_template,
 )
-chain2 = LLMChain(llm=llm, prompt=prompt2)
+summarize_chain = LLMChain(llm=llm, prompt=summarize_prompt)
 
 # 2 つの Chain を直列に繋ぐ
-# verbose=True として、各 Chain の実行結果を表示する
-overall_chain = SimpleSequentialChain(chains=[chain, chain2], verbose=True)
+cot_summarize_chain = SimpleSequentialChain(
+    chains=[cot_chain, summarize_chain])
 
 # 実行
-result = overall_chain.run("echo")
-print(result)
+result = cot_summarize_chain(
+    "私は市場に行って10個のリンゴを買いました。隣人に2つ、修理工に2つ渡しました。それから5つのリンゴを買って1つ食べました。残りは何個ですか？")
+print(result['output'])

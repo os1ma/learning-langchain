@@ -1,6 +1,10 @@
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 from langchain.llms import OpenAI
+import langchain
+
+
+langchain.verbose = True
 
 # Model を用意
 llm = OpenAI(model_name="text-davinci-003", temperature=0)
