@@ -14,6 +14,8 @@ chromadb = "^0.3.14"
 unstructured = "^0.5.7"
 bs4 = "^0.0.1"
 requests = "^2.28.2"
+markdown = "^3.4.3"
+tiktoken = "^0.3.3"
 
 
 [tool.poetry.group.dev.dependencies]

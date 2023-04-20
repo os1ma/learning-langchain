@@ -1,14 +1,13 @@
-from langchain.document_loaders.sitemap import SitemapLoader
+from langchain.document_loaders import DirectoryLoader
 from langchain.indexes import VectorstoreIndexCreator
+import langchain
 
 
-loader = SitemapLoader(web_path="https://www.studyco.io/sitemap.xml")
-documents = loader.load()
-print("=== documents[0] ===")
-print(documents[0])
+langchain.verbose = True
 
+loader = DirectoryLoader("./langchain/docs/_build/html/", glob="**/*.html")
 index = VectorstoreIndexCreator().from_loaders([loader])
-result = index.query("StudyCoのメンバーを1人選んで紹介してください。")
+print("index created")
 
-print("=== result ===")
-print(result)
+result = index.query("LangChainの概要を1文で説明してください。")
+print(f"result: {result}")
