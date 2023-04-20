@@ -1,15 +1,18 @@
 from langchain.chains import ConversationChain
 from langchain.llms import OpenAI
 from langchain.memory import ConversationBufferMemory
+import langchain
 
-llm = OpenAI(temperature=0)
+
+langchain.verbose = True
+
+llm = OpenAI(model_name="text-davinci-003", temperature=0)
 conversation = ConversationChain(
     llm=llm,
-    verbose=True,
     memory=ConversationBufferMemory()
 )
 
 while True:
     user_message = input("You: ")
     ai_message = conversation.predict(input=user_message)
-    print(ai_message)
+    print(f"AI: {ai_message}")
